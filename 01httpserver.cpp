@@ -10,7 +10,7 @@ std::string get_current_time() {
     std::time_t t = std::time(nullptr);
     std::tm* tm_ptr = std::localtime(&t);
     char buffer[100];
-    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", tm_ptr);
+    std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S\n", tm_ptr);
     printf("Current time: %s\n", buffer);
     return std::string(buffer);
 }
