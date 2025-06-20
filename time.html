@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>调用 C++ 服务器端函数</title>
+    <script>
+        function getTime() {
+            // 发起 GET 请求到 /get_time 路径
+            fetch('http://localhost:8080/get_time')
+                .then(response => response.text())  // 处理返回内容
+                .then(data => {
+                    // 将当前时间显示在网页上
+                    document.getElementById('time').innerText = '当前时间：' + data;
+                    // 也可以打印到控制台
+                    console.log('当前时间:', data);
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>通过按钮调用 C++ 服务器端函数</h1>
+    <button onclick="getTime()">获取当前时间</button>
+    <p id="time">时间将显示在这里...</p>
+</body>
+</html>
