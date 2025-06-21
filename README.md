@@ -29,3 +29,15 @@
     ```bash
     curl http://localhost:8080/get_time
     ```
+
+
+服务器上用的tcp6
+
+1. 查看端口情况
+netstat -tuln | grep 10000
+
+2. 忽略http_proxy环境变量
+http_proxy = 
+
+2. curl发送tcp6 请求测试
+curl http://[::1]:10000/get_time

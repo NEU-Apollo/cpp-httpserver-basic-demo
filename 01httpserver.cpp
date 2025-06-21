@@ -31,13 +31,15 @@ bool server() {
         res.set_content(time, "text/plain");
     });
 
-    for (int port = 8080; port < 65535; port++) {
+    for (int port = 10000; port < 65535; port++) {
         if (svr.bind_to_port("localhost", port)) {
             std::cout << "Server started on port " << port << std::endl;
             return svr.listen_after_bind();
+        } else {
+            std::cout << "Failed to bind to port " << port << std::endl;
         }
     }
-
+    throw std::runtime_error("Failed to start server");
     return false;
 }
 
@@ -49,7 +51,10 @@ void start_server() {
 
 int main() {
     start_server();
+    printf("Server started.\n");
+    int count = 0;
     while (true) {
+        printf("Count: %d ", count++);
         printf("Waiting for requests...\n");
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
