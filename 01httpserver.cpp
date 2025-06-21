@@ -1,4 +1,5 @@
 #include "httplib.h"
+#include <thread>
 #include <string>
 #include <ctime>
 
@@ -15,7 +16,7 @@ std::string get_current_time() {
     return std::string(buffer);
 }
 
-int main() {
+bool server() {
     // 设置跨域头，允许所有来源访问
     svr.set_default_headers({{"Access-Control-Allow-Origin", "*"}}); // 允许所有域名跨域访问
 
@@ -30,8 +31,27 @@ int main() {
         res.set_content(time, "text/plain");
     });
 
-    // 启动服务器
-    svr.listen("0.0.0.0", 8080);
+    for (int port = 8080; port < 65535; port++) {
+        if (svr.bind_to_port("localhost", port)) {
+            std::cout << "Server started on port " << port << std::endl;
+            return svr.listen_after_bind();
+        }
+    }
 
+    return false;
+}
+
+void start_server() {
+    static std::thread server_thread(server);
+    server_thread.detach();
+}
+
+
+int main() {
+    start_server();
+    while (true) {
+        printf("Waiting for requests...\n");
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
     return 0;
 }
